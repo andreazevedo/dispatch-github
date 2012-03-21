@@ -14,7 +14,7 @@ object Auth {
 		svc.secure / "authorize" <<? Map("client_id" -> client_id, "redirect_uri" -> redirect_uri, "scope" -> scope.mkString(","))
 		
 	def access_token(client_id: String, redirect_uri: String, client_secret: String, code: String) =
-		svc.secure.POST / "access_token" <:< 
+		svc.secure.POST / "access_token" <<? 
 			Map("client_id" -> client_id, 
 				"redirect_uri" -> redirect_uri,
 				"client_secret" -> client_secret,
@@ -22,9 +22,9 @@ object Auth {
 			) >% {
 				m => m("access_token")
 			}
-	
-	object Scope extends Enumeration {
-		type Scope = Value
-		val user, public_repo, repo, gist = Value
-	}
+}
+
+object Scope extends Enumeration {
+	type Scope = Value
+	val user, public_repo, repo, gist = Value
 }
