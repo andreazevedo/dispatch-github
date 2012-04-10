@@ -14,8 +14,6 @@ object GhOrganization {
 		svc.secure <<? Map("access_token" -> access_token) ># { json =>
 			val jsonList: List[JsValue] = list(json)
 
-			var orgs = List[GhOrganization]()
-
 			jsonList.map { child =>
 				val jsonObj = obj(child)
 
@@ -24,18 +22,9 @@ object GhOrganization {
 				val url = jsonObj.self(JsString("url")).self.toString
 				val avatar_url = jsonObj.self(JsString("avatar_url")).self.toString
 
-				orgs = orgs :+ GhOrganization(id, login, url, avatar_url)
+				GhOrganization(id, login, url, avatar_url)
 			}
-
-			orgs
 		}
 	}
 	
 }
-
-
-/*
-
-
-
-*/
