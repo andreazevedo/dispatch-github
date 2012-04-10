@@ -16,11 +16,11 @@ object GhUser {
 			val jsonObj = obj(json)
 			
 			val id: Int = num(jsonObj.self(JsString("id"))).intValue
-			val login = jsonObj.self(JsString("login")).toString
-			val name = jsonObj.self(JsString("name")).toString
-			val email = jsonObj.self(JsString("email")).toString
-			val avatar_url = jsonObj.self(JsString("avatar_url")).toString
-			val account_type = jsonObj.self(JsString("type")).toString
+			val login = jsonObj.self(JsString("login")).self.toString
+			val name = jsonObj.self(JsString("name")).self.toString
+			val email = jsonObj.self(JsString("email")).self.toString
+			val avatar_url = jsonObj.self(JsString("avatar_url")).self.toString
+			val account_type = jsonObj.self(JsString("type")).self.toString
 			
 			GhUser(id, login, name, email, avatar_url, account_type)
 		}
