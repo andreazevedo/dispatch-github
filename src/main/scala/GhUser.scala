@@ -5,6 +5,7 @@ import dispatch._
 import json._
 import JsHttp._
 
+case class GhContributor(id: Int, login: String, avatar_url: String)
 
 case class GhUser(id: Int, login: String, name: String, email: String, avatar_url: String, account_type: String)
 
