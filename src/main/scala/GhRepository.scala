@@ -20,7 +20,7 @@ object GhRepository {
 			jsonList.map { child =>
 				val jsonObj = obj(child)
 
-				val jsonOwnerObj = obj(jsonObj.self(JsString("owner_login")))
+				val jsonOwnerObj = obj(jsonObj.self(JsString("owner")))
 
 				val id:Int = num(jsonObj.self(JsString("id"))).intValue
 				val owner_login = jsonOwnerObj.self(JsString("login")).self.toString
