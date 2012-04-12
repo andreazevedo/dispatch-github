@@ -20,8 +20,10 @@ object GhRepository {
 			jsonList.map { child =>
 				val jsonObj = obj(child)
 
+				val jsonOwnerObj = obj(jsonObj.self(JsString("owner_login")))
+
 				val id:Int = num(jsonObj.self(JsString("id"))).intValue
-				val owner_login = jsonObj.self(JsString("owner_login")).self.toString
+				val owner_login = jsonOwnerObj.self(JsString("login")).self.toString
 				val name = jsonObj.self(JsString("name")).self.toString
 				val updatedAt:Date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(jsonObj.self(JsString("updatedAt")).self.toString)
 				val language = jsonObj.self(JsString("language")).self.toString
