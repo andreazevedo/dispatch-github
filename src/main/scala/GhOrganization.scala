@@ -10,14 +10,12 @@ case class GhOrganization(id: Int, login: String, url: String, avatar_url: Strin
 	def members(access_token:String) = {
 		val svc = GitHub.api_host / "orgs" / login / "members"
 		svc.secure <<? Map("access_token" -> access_token) ># { json =>
-			val jsonList: List[JsValue] = list(json)
+			val jsonList = parse.jsonList(json)
 
-			jsonList.map { child =>
-				val jsonObj = obj(child)
-
-				val id: Int = num(jsonObj.self(JsString("id"))).intValue
-				val login = jsonObj.self(JsString("login")).self.toString
-				val avatar_url = jsonObj.self(JsString("avatar_url")).self.toString
+			jsonList.map { jsonObj =>
+				val id: Int = jsonObj("id").asInt
+				val login: String = jsonObj("login").asString
+				val avatar_url = jsonObj("avatar_url").asString
 
 				GhContributor(id, login, avatar_url)
 			}
@@ -31,15 +29,14 @@ object GhOrganization {
 	def get_organizations(access_token: String) = {
 		val svc = GitHub.api_host / "user" / "orgs"
 		svc.secure <<? Map("access_token" -> access_token) ># { json =>
-			val jsonList: List[JsValue] = list(json)
+			val jsonList = parse.jsonList(json)
 
-			jsonList.map { child =>
-				val jsonObj = obj(child)
-
-				val id: Int = num(jsonObj.self(JsString("id"))).intValue
-				val login = jsonObj.self(JsString("login")).self.toString
-				val url = jsonObj.self(JsString("url")).self.toString
-				val avatar_url = jsonObj.self(JsString("avatar_url")).self.toString
+			jsonList.map { jsonObj =>
+				
+				val id: Int = jsonObj("id").asInt
+				val login = jsonObj("login").asString
+				val url = jsonObj("url").asString
+				val avatar_url = jsonObj("avatar_url").asString
 
 				GhOrganization(id, login, url, avatar_url)
 			}

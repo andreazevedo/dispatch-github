@@ -14,14 +14,14 @@ object GhUser {
 	def get_authenticated_user(access_token: String) = {
 		val svc = GitHub.api_host / "user"
 		svc.secure <<? Map("access_token" -> access_token) ># { json =>
-			val jsonObj = obj(json)
+			val jsonObj = parse.jsonObj(json)
 			
-			val id: Int = num(jsonObj.self(JsString("id"))).intValue
-			val login = jsonObj.self(JsString("login")).self.toString
-			val name = jsonObj.self(JsString("name")).self.toString
-			val email = jsonObj.self(JsString("email")).self.toString
-			val avatar_url = jsonObj.self(JsString("avatar_url")).self.toString
-			val account_type = jsonObj.self(JsString("type")).self.toString
+			val id = jsonObj("id").asInt
+			val login = jsonObj("login").asString
+			val name = jsonObj("name").asString
+			val email = jsonObj("email").asString
+			val avatar_url = jsonObj("avatar_url").asString
+			val account_type = jsonObj("type").asString
 			
 			GhUser(id, login, name, email, avatar_url, account_type)
 		}

@@ -6,7 +6,6 @@ import json._
 import JsHttp._
 
 import java.util.Date
-import java.text.SimpleDateFormat
 
 case class GhRepository(id:Int, owner_login:String, name:String, updated_at:Date, language:String,
 	html_url:String, clone_url:String, description:String, open_issues:Int)
@@ -15,22 +14,21 @@ object GhRepository {
 	def get_org_repos(org_login:String, access_token:String) = {
 		val svc = GitHub.api_host / "orgs" / org_login / "repos"
 		svc.secure <<? Map("access_token" -> access_token) ># { json =>
-			val jsonList: List[JsValue] = list(json)
+			val jsonList = parse.jsonList(json)
 
-			jsonList.map { child =>
-				val jsonObj = obj(child)
+			jsonList.map { jsonObj =>
 
-				val jsonOwnerObj = obj(jsonObj.self(JsString("owner")))
+				val jsonOwnerObj = jsonObj("owner").asObj
 
-				val id:Int = num(jsonObj.self(JsString("id"))).intValue
-				val owner_login = jsonOwnerObj.self(JsString("login")).self.toString
-				val name = jsonObj.self(JsString("name")).self.toString
-				val updated_at:Date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(jsonObj.self(JsString("updated_at")).self.toString.replace("T", " ").replace("Z", ""))
-				val language = jsonObj.self(JsString("language")).self.asInstanceOf[String]
-				val html_url = jsonObj.self(JsString("html_url")).self.toString
-				val clone_url = jsonObj.self(JsString("clone_url")).self.toString
-				val description = jsonObj.self(JsString("description")).self.toString
-				val open_issues:Int = num(jsonObj.self(JsString("open_issues"))).intValue
+				val id = jsonObj("id").asInt
+				val owner_login = jsonOwnerObj("login").asString
+				val name = jsonObj("name").asString
+				val updated_at = jsonObj("updated_at").asDate
+				val language = jsonObj("language").asString
+				val html_url = jsonObj("html_url").asString
+				val clone_url = jsonObj("clone_url").asString
+				val description = jsonObj("description").asString
+				val open_issues = jsonObj("open_issues").asInt
 
 				GhRepository(id, owner_login, name, updated_at, language, html_url, clone_url, description, open_issues)
 			}
