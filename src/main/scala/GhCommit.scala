@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat
 case class GhAuthor(name:String, date:Date, email:String)
 case class GhTree(sha:String, url:String)
 
-case class GhCommit(sha:String, url:String, author:GhAuthor, committer:GhAuthor, 
+case class GhCommitSummary(sha:String, url:String, author:GhAuthor, committer:GhAuthor, 
 					message:String, tree:GhTree, parents:List[GhTree])
 
 
@@ -22,19 +22,20 @@ object GhCommit {
 			val jsonList = parse.jsonList(json)
 
 			jsonList.map { jsonObj =>
-
 				val sha = jsonObj("sha").asString
-				val url = jsonObj("url").asString
-				val author = parseAuthor(jsonObj("author").asObj)
-				val committer = parseAuthor(jsonObj("committer").asObj)
-				val message = jsonObj("message").asString
-				val tree = parseTree(jsonObj("tree").asObj)
-
 				val parents = jsonObj("parents").asList.map { jsonParentObj =>
 					parseTree(jsonParentObj)
 				}
+				
+				val jsonCommitObj = jsonObj("commit").asObj /* hacking as github documentation is incorrect */
+				
+				val url = jsonCommitObj("url").asString
+				val author = parseAuthor(jsonCommitObj("author").asObj)
+				val committer = parseAuthor(jsonCommitObj("committer").asObj)
+				val message = jsonCommitObj("message").asString
+				val tree = parseTree(jsonCommitObj("tree").asObj)
 
-				GhCommit(sha, url, author, committer, message, tree, parents)
+				GhCommitSummary(sha, url, author, committer, message, tree, parents)
 			}
 		}
 	}
