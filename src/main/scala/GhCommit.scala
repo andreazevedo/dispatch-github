@@ -13,14 +13,16 @@ case class GhAuthor(avatar_url: String, url: String, login: String, gravatar_id:
 
 case class GhTree(sha:String, url:String)
 
-case class GhCommitData(message: String, url: String, author: GhAuthorSummary, committer: GhAuthorSummary, tree: GhTree)
+case class GhCommitData(message: String, url: String, author: GhAuthorSummary, 
+						committer: GhAuthorSummary, tree: GhTree)
 
 case class GhCommitStats(total: Int, additions: Int, deletions: Int)
 
 case class GhCommitFile(status: String, blob_url: String, patch: String, additions: Int, deletions: Int, 
 						filename: String, raw_url: String, change: Int, sha: String)
 
-case class GhCommitSummary(commit: GhCommitData, parents: List[GhTree], url: String, sha: String, author: GhAuthor, committer: GhAuthor)
+case class GhCommitSummary(commit: GhCommitData, parents: List[GhTree], url: String, sha: String, 
+						   author: GhAuthor, committer: GhAuthor)
 
 case class GhCommit(stats: GhCommitStats, url: String, files: List[GhCommitFile], commit: GhCommitData, 
 					committer: GhAuthor, author: GhAuthor, parents: List[GhTree], sha: String)
@@ -28,10 +30,10 @@ case class GhCommit(stats: GhCommitStats, url: String, files: List[GhCommitFile]
 
 object GhCommit {
 
-	def get_commits(user: String, repo: String, access_token: String, last_sha: String, per_page: Int): Handler[List[Unit]] =
+	def get_commits(user: String, repo: String, access_token: String, last_sha: String, per_page: Int): Handler[List[GhCommitSummary]] =
 		get_commits(user, repo, access_token, Map("last_sha" -> last_sha, "per_page" -> per_page.toString))
 
-	def get_commits(user: String, repo: String, access_token: String, params: Map[String, String] = Map()): Handler[List[Unit]] = {
+	def get_commits(user: String, repo: String, access_token: String, params: Map[String, String] = Map()): Handler[List[GhCommitSummary]] = {
 		val svc = GitHub.api_host / "repos" / user / repo / "commits"
 		svc.secure <<? (params + ("access_token" -> access_token)) ># { json =>
 			val jsonList = parse.jsonList(json)
@@ -71,7 +73,7 @@ object GhCommit {
 	private def parseFile(jsonObj: JsonObject) = {
 		val status = jsonObj("status").asString
 		val blob_url = jsonObj("blob_url").asString
-		val patch = jsonObj("patch").asString
+		val patch = if (jsonObj.contains("patch")) jsonObj("patch").asString else ""
 		val additions = jsonObj("additions").asInt
 		val deletions = jsonObj("deletions").asInt
 		val filename = jsonObj("filename").asString
@@ -99,6 +101,8 @@ object GhCommit {
 			parseTree(jsonParentObj)
 		}
 		val sha = jsonObj("sha").asString
+
+		GhCommitSummary(commit, parents, url, sha, author, committer)
 	}
 
 	private def parseCommitData(jsonObj: JsonObject) = {
