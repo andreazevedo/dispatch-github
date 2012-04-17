@@ -78,7 +78,7 @@ object GhCommit {
 		val deletions = jsonObj("deletions").asInt
 		val filename = jsonObj("filename").asString
 		val raw_url = jsonObj("raw_url").asString
-		val change = jsonObj("change").asInt
+		val change = if (jsonObj.contains("change")) jsonObj("change").asInt else 0
 		val sha = jsonObj("sha").asString
 
 		GhCommitFile(status, blob_url, patch, additions, deletions, filename, raw_url, change, sha)
