@@ -19,7 +19,7 @@ case class GhCommitData(message: String, url: String, author: GhAuthorSummary,
 case class GhCommitStats(total: Int, additions: Int, deletions: Int)
 
 case class GhCommitFile(status: String, blob_url: String, patch: String, additions: Int, deletions: Int, 
-						filename: String, raw_url: String, change: Int, sha: String)
+						filename: String, raw_url: String, changes: Int, sha: String)
 
 case class GhCommitSummary(commit: GhCommitData, parents: List[GhTree], url: String, sha: String, 
 						   author: GhAuthor, committer: GhAuthor)
@@ -78,10 +78,10 @@ object GhCommit {
 		val deletions = jsonObj("deletions").asInt
 		val filename = jsonObj("filename").asString
 		val raw_url = jsonObj("raw_url").asString
-		val change = if (jsonObj.contains("change")) jsonObj("change").asInt else 0
+		val changes = if (jsonObj.contains("changes")) jsonObj("changes").asInt else 0
 		val sha = jsonObj("sha").asString
 
-		GhCommitFile(status, blob_url, patch, additions, deletions, filename, raw_url, change, sha)
+		GhCommitFile(status, blob_url, patch, additions, deletions, filename, raw_url, changes, sha)
 	}
 
 	private def parseStats(jsonObj: JsonObject) = {
