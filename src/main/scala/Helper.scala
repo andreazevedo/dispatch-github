@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat
 
 case class JsonObject(private val jsObject: JsObject) {
 	def apply(key: String):JsonValue = JsonValue(jsObject, key)
-	def contains(key: String) :Boolean = jsObject.self.contains(JsString(key))
+	def contains(key: String) :Boolean = jsObject.self.contains(JsString(key)) && jsObject.self(JsString(key)).self != null
 }
 
 case class JsonValue(private val jsObject:JsObject, private val key:String) {
