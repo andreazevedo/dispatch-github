@@ -22,10 +22,10 @@ case class GhCommitFile(status: String, blob_url: String, patch: String, additio
 						filename: String, raw_url: String, changes: Int, sha: String)
 
 case class GhCommitSummary(commit: GhCommitData, parents: List[GhTree], url: String, sha: String, 
-						   author: GhAuthor, committer: GhAuthor)
+						   author: GhAuthor, committer: Option[GhAuthor])
 
 case class GhCommit(stats: GhCommitStats, url: String, files: List[GhCommitFile], commit: GhCommitData, 
-					committer: GhAuthor, author: GhAuthor, parents: List[GhTree], sha: String)
+					committer: Option[GhAuthor], author: GhAuthor, parents: List[GhTree], sha: String)
 
 
 object GhCommit {
@@ -60,7 +60,7 @@ object GhCommit {
 			parseFile(jsonParentObj)
 		}
 		val commit = parseCommitData(jsonObj("commit").asObj)
-		val committer = parseAuthor(jsonObj("committer").asObj)
+		val committer = if (jsonObj.contains("committer")) Some(parseAuthor(jsonObj("committer").asObj)) else None
 		val author = parseAuthor(jsonObj("author").asObj)
 		val parents = jsonObj("parents").asList.map { jsonParentObj => 
 			parseTree(jsonParentObj)
@@ -95,7 +95,7 @@ object GhCommit {
 	private def parseCommitSummary(jsonObj: JsonObject) = {
 		val url = jsonObj("url").asString
 		val commit = parseCommitData(jsonObj("commit").asObj)
-		val committer = parseAuthor(jsonObj("committer").asObj)
+		val committer = if (jsonObj.contains("committer")) Some(parseAuthor(jsonObj("committer").asObj)) else None
 		val author = parseAuthor(jsonObj("author").asObj)
 		val parents = jsonObj("parents").asList.map { jsonParentObj => 
 			parseTree(jsonParentObj)
