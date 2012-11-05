@@ -18,11 +18,4 @@ class AuthSpec extends Specification {
 			Auth.authorize_uri(clientId, redirectUri).to_uri.toString must equalTo("https://github.com/login/oauth/authorize?client_id=" + clientId + "&redirect_uri=" + redirectUri)
 		}
 	}
-/*
-	"The Request returned by authorize_uri, when called" should {
-		"do something" in {
-			Auth.authorize_uri(clientId, clientSecret)
-		}
-	}
-*/
 }

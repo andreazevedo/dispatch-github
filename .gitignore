@@ -1,3 +1,4 @@
 target/
 boot/
 
+sbt_test_proxy.bat
