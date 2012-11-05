@@ -1,10 +1,8 @@
 package dispatch.github
 
 import dispatch._
-
 import json._
 import JsHttp._
-
 import java.util.Date
 import java.text.SimpleDateFormat
 
@@ -30,12 +28,15 @@ case class GhCommit(stats: GhCommitStats, url: String, files: List[GhCommitFile]
 
 object GhCommit {
 
-	def get_commits(user: String, repo: String, access_token: String, last_sha: String, per_page: Int): Handler[List[GhCommitSummary]] =
-		get_commits(user, repo, access_token, Map("last_sha" -> last_sha, "per_page" -> per_page.toString))
+	def get_commits(user: String, repo: String, last_sha: String, per_page: Int, access_token: String): Handler[List[GhCommitSummary]] =
+		get_commits(user, repo, Map("last_sha" -> last_sha, "per_page" -> per_page.toString, "access_token" -> access_token))
 
-	def get_commits(user: String, repo: String, access_token: String, params: Map[String, String] = Map()): Handler[List[GhCommitSummary]] = {
+	def get_commits(user: String, repo: String, last_sha: String, per_page: Int): Handler[List[GhCommitSummary]] =
+		get_commits(user, repo, Map("last_sha" -> last_sha, "per_page" -> per_page.toString))
+
+	def get_commits(user: String, repo: String, params: Map[String, String] = Map()): Handler[List[GhCommitSummary]] = {
 		val svc = GitHub.api_host / "repos" / user / repo / "commits"
-		svc.secure <<? (params + ("access_token" -> access_token)) ># { json =>
+		svc.secure <<? params ># { json =>
 			val jsonList = parse.jsonList(json)
 
 			jsonList.map { jsonObj => 
