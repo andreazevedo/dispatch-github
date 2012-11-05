@@ -1,7 +1,6 @@
 package dispatch.github
 
 import dispatch._
-
 import json._
 import JsHttp._
 

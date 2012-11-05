@@ -1,7 +1,6 @@
 package dispatch.github.specs
 
 import org.specs._
-
 import dispatch._
 import dispatch.github._
 

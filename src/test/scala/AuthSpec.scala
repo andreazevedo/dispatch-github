@@ -1,7 +1,6 @@
 package dispatch.github.specs
 
 import org.specs._
-
 import dispatch.github._
 
 class AuthSpec extends Specification {

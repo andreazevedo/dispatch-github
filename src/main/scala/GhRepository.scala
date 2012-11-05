@@ -1,10 +1,8 @@
 package dispatch.github
 
 import dispatch._
-
 import json._
 import JsHttp._
-
 import java.util.Date
 
 case class GhOwner(id:Int, login: String)
