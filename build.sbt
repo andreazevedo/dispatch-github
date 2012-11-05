@@ -8,5 +8,6 @@ libraryDependencies ++= Seq(
 	"net.databinder" % "dispatch-core_2.9.1" % "0.8.7",
 	"net.databinder" % "dispatch-http-json_2.9.1" % "0.8.7",
 	"net.databinder" % "dispatch-oauth_2.9.1" % "0.8.7",
-	"org.scala-tools.testing" % "specs_2.9.1" % "1.6.9" % "test"
+	"org.scala-tools.testing" % "specs_2.9.1" % "1.6.9" % "test",
+	"net.liftweb" % "lift-json_2.9.1" % "2.5-M1"
 )

@@ -11,13 +11,13 @@ class GhCommitSpec extends Specification {
 			GhCommit.get_commits("andreazevedo", "dispatch-github") must haveClass[dispatch.Handler[List[GhCommitSummary]]]
 		}
 
-		"return something (not null) when the request is invoked" in {
+		"return something (not null) when the commits request is invoked" in {
 			val req = GhCommit.get_commits("andreazevedo", "dispatch-github")
 			val commits = Http(req)
 			commits must notBeNull
 		}
 
-		"return the right commit(s) when the request is invoked passing last_sha" in {
+		"return the right commit(s) when the commits request is invoked passing last_sha" in {
 			val req = GhCommit.get_commits("andreazevedo", "dispatch-github", "d77212a4a10c19e1329bd2614fc76abfcb15732d", 30)
 			val commits = Http(req)
 			commits must notBeNull
