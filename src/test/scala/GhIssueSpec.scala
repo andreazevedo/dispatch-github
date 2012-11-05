@@ -6,7 +6,7 @@ import dispatch.github._
 
 class GhIssueSpec extends Specification {
 	"When retrieving github issues" should {
-		"return a handler" in {
+		"return a handler (before the request is not invoked)" in {
 			GhIssue.get_issues("andreazevedo", "dispatch-github-specs") must haveClass[dispatch.Handler[List[GhIssue]]]
 		}
 

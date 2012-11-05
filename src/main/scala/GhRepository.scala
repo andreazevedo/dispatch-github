@@ -10,9 +10,12 @@ case class GhRepository(id:Int, owner:GhOwner, name:String, updated_at:Date, lan
 	html_url:String, clone_url:String, description:String, open_issues:Int)
 
 object GhRepository {
-	def get_org_repos(org_login:String, access_token:String) = {
+	def get_org_repos(org_login:String, access_token:String) : Handler[List[GhRepository]] = 
+		get_org_repos(org_login, Map("access_token" -> access_token))
+
+	def get_org_repos(org_login:String, params:Map[String, String] = Map()) : Handler[List[GhRepository]] = {
 		val svc = GitHub.api_host / "orgs" / org_login / "repos"
-		svc.secure <<? Map("access_token" -> access_token) ># { json =>
+		svc.secure <<? params ># { json =>
 			val jsonList = parse.jsonList(json)
 
 			jsonList.map { jsonObj =>
