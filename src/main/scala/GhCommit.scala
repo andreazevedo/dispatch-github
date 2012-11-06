@@ -134,7 +134,7 @@ object GhCommit {
 		GhAuthorSummary(name, date, email)
 	}
 
-	private def parseTree(jsonObj: JsonObject) = {
+	private def parseTree(jsonObj: JsonObject) = { 
 		val sha = jsonObj("sha").asString
 		val url = jsonObj("url").asString
 

@@ -3,6 +3,7 @@ package dispatch.github.specs
 import org.specs._
 import dispatch._
 import dispatch.github._
+import scalendar._
 
 class GhCommitSpec extends Specification {
 	"When retrieving github commits" should {
@@ -29,16 +30,49 @@ class GhCommitSpec extends Specification {
 			val req = GhCommit.get_commits("andreazevedo", "dispatch-github", "7433b3d714324418aca12aa6b04dbd21154bcc07", 30)
 			val commits = Http(req)
 
-			val commit = commits(0)
+			val commit = commits.first
 
 			commit must notBeNull
 			commit.commit must notBeNull
 			commit.commit.message must equalTo("Started issues integration")
 			commit.commit.url must equalTo("https://api.github.com/repos/andreazevedo/dispatch-github/git/commits/98b8f958e8a74af02e9b0e7e1a641e029c88b1f8")
-			print(commit.commit.author.toString)
-			//commit.commit.tree must notBeNull
-			//commit.url.length must beGreaterThan(0)
-			//commit.sha.length must beGreaterThan(0)
+			commit.commit.author.name must equalTo("Andre Azevedo")
+			commit.commit.author.date must equalTo(Scalendar(year = 2012, month = 04, day = 19, hour = 04, minute = 23, second = 07).date)
+			commit.commit.author.email must equalTo("andre.azevedo@gmail.com")
+			commit.commit.committer.name must equalTo("Andre Azevedo")
+			commit.commit.committer.date must equalTo(Scalendar(year = 2012, month = 04, day = 19, hour = 04, minute = 23, second = 07).date)
+			commit.commit.committer.email must equalTo("andre.azevedo@gmail.com")
+			commit.commit.tree.sha must equalTo("011225168ca6514959e833b22cf0a1d287dfb1a1")
+			commit.commit.tree.url must equalTo("https://api.github.com/repos/andreazevedo/dispatch-github/git/trees/011225168ca6514959e833b22cf0a1d287dfb1a1")
+			commit.parents.length must be(1)
+			commit.parents(0).sha must equalTo("f1346bb6cec1146ad923398a20dcf7f3aae04541")
+			commit.parents(0).url must equalTo("https://api.github.com/repos/andreazevedo/dispatch-github/commits/f1346bb6cec1146ad923398a20dcf7f3aae04541")
+			commit.url must equalTo("https://api.github.com/repos/andreazevedo/dispatch-github/commits/98b8f958e8a74af02e9b0e7e1a641e029c88b1f8")
+			commit.sha must equalTo("98b8f958e8a74af02e9b0e7e1a641e029c88b1f8")
+			commit.author must beSome[GhAuthor]
+			commit.author match {
+				case Some(author) => 
+					author.avatar_url must equalTo("https://secure.gravatar.com/avatar/bcc0f1aa2a39d379e613efe4858adad3?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png")
+					author.url must equalTo("https://api.github.com/users/andreazevedo")
+					author.login must equalTo("andreazevedo")
+					author.gravatar_id must	equalTo("bcc0f1aa2a39d379e613efe4858adad3")
+					author.id must beEqualTo(741321)
+				case _ =>
+					true must be(false)
+			}
+			commit.committer must beSome[GhAuthor]
+			commit.committer match {
+				case Some(committer) => 
+					committer.avatar_url must equalTo("https://secure.gravatar.com/avatar/bcc0f1aa2a39d379e613efe4858adad3?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png")
+					committer.url must equalTo("https://api.github.com/users/andreazevedo")
+					committer.login must equalTo("andreazevedo")
+					committer.gravatar_id must	equalTo("bcc0f1aa2a39d379e613efe4858adad3")
+					committer.id must beEqualTo(741321)
+				case _ =>
+					true must be(false)
+			}
+
+			true
 		}
 	}
 }
