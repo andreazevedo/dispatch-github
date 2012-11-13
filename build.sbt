@@ -12,3 +12,9 @@ libraryDependencies ++= Seq(
 	"net.liftweb" % "lift-json_2.9.1" % "2.5-M1",
 	"com.github.philcali" %% "scalendar" % "0.1.2"
 )
+
+name := "dispatch-github"
+
+organization := "dispatch"
+
+version := "0.1-SNAPSHOT"
