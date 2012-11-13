@@ -10,7 +10,7 @@ case class GhIssue(number: Int, state: String, title: String, body: String, user
 				   comments: Int, milestone: Option[GhMilestone], closed_at: Date, created_at: Date, updated_at: Date)
 
 case class GhMilestone(number: Int, state: String, title: String, description: String, creator: GhAuthor, 
-					   open_issues: Int, closed_issues: Int, created_at: Date, due_on: Option[Date])
+					   open_issues: Int, closed_issues: Int, created_at: Date, due_on: Date)
 
 
 object GhIssue {
