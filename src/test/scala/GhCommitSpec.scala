@@ -3,7 +3,6 @@ package dispatch.github.specs
 import org.specs._
 import dispatch._
 import dispatch.github._
-import scalendar._
 
 class GhCommitSpec extends Specification {
 	"When retrieving github commits" should {
@@ -37,10 +36,10 @@ class GhCommitSpec extends Specification {
 			commit.commit.message must equalTo("Started issues integration")
 			commit.commit.url must equalTo("https://api.github.com/repos/andreazevedo/dispatch-github/git/commits/98b8f958e8a74af02e9b0e7e1a641e029c88b1f8")
 			commit.commit.author.name must equalTo("Andre Azevedo")
-			commit.commit.author.date must equalTo(Scalendar(year = 2012, month = 04, day = 19, hour = 04, minute = 23, second = 07).date)
+			commit.commit.author.date must equalTo(DateTimeHelper.createDate(2012, 4, 19, 4, 23, 7, "GMT"))
 			commit.commit.author.email must equalTo("andre.azevedo@gmail.com")
 			commit.commit.committer.name must equalTo("Andre Azevedo")
-			commit.commit.committer.date must equalTo(Scalendar(year = 2012, month = 04, day = 19, hour = 04, minute = 23, second = 07).date)
+			commit.commit.committer.date must equalTo(DateTimeHelper.createDate(2012, 4, 19, 4, 23, 7, "GMT"))
 			commit.commit.committer.email must equalTo("andre.azevedo@gmail.com")
 			commit.commit.tree.sha must equalTo("011225168ca6514959e833b22cf0a1d287dfb1a1")
 			commit.commit.tree.url must equalTo("https://api.github.com/repos/andreazevedo/dispatch-github/git/trees/011225168ca6514959e833b22cf0a1d287dfb1a1")

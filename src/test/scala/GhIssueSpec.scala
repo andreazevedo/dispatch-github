@@ -3,7 +3,6 @@ package dispatch.github.specs
 import org.specs._
 import dispatch._
 import dispatch.github._
-import scalendar._
 
 class GhIssueSpec extends Specification {
 	"When retrieving github issues" should {
@@ -71,12 +70,12 @@ class GhIssueSpec extends Specification {
 			issue.milestone.get.creator.id must beEqualTo(741321)
 			issue.milestone.get.open_issues must be(1)
 			issue.milestone.get.closed_issues must be(0)
-			issue.milestone.get.created_at must equalTo(Scalendar(year = 2012, month = 11, day = 05, hour = 18, minute = 42, second = 03).date)
-			issue.milestone.get.due_on must equalTo(Scalendar(year = 2012, month = 11, day = 05, hour = 06, minute = 00, second = 00).date)
+			issue.milestone.get.created_at must equalTo(DateTimeHelper.createDate(2012, 11, 5, 20, 42, 3, "GMT"))
+			issue.milestone.get.due_on must equalTo(DateTimeHelper.createDate(2012, 11, 5, 8, 0, 0, "GMT"))
 
 			issue.closed_at must beNull
-			issue.created_at must equalTo(Scalendar(year = 2012, month = 11, day = 05, hour = 18, minute = 10, second = 02).date)
-			issue.updated_at must equalTo(Scalendar(year = 2012, month = 11, day = 06, hour = 15, minute = 50, second = 53).date)
+			issue.created_at must equalTo(DateTimeHelper.createDate(2012, 11, 5, 20, 10, 2, "GMT"))
+			issue.updated_at must equalTo(DateTimeHelper.createDate(2012, 11, 6, 17, 50, 53, "GMT"))
 		}
 	}
 
