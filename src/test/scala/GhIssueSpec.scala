@@ -79,4 +79,14 @@ class GhIssueSpec extends Specification {
 			issue.updated_at must equalTo(Scalendar(year = 2012, month = 11, day = 06, hour = 15, minute = 50, second = 53).date)
 		}
 	}
+
+
+
+
+	"When creating a new github issues" should {
+		"return a handler (before the request is not invoked)" in {
+			val issue = GhIssueSummary("Test from dispatch github specs", "This is the body of the issue", "", None, Nil)
+			GhIssue.create("andreazevedo", "dispatch-github-specs", issue, "fakeAccessToken") must haveClass[dispatch.Handler[GhIssue]]
+		}
+	}
 }

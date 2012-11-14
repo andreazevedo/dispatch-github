@@ -31,6 +31,9 @@ object GhCommit {
 	def get_commits(user: String, repo: String, last_sha: String, per_page: Int, access_token: String): Handler[List[GhCommitSummary]] =
 		get_commits(user, repo, Map("last_sha" -> last_sha, "per_page" -> per_page.toString, "access_token" -> access_token))
 
+	def get_commits(user: String, repo: String, last_sha: String, access_token: String): Handler[List[GhCommitSummary]] =
+		get_commits(user, repo, Map("last_sha" -> last_sha, "access_token" -> access_token))
+
 	def get_commits(user: String, repo: String, last_sha: String, per_page: Int): Handler[List[GhCommitSummary]] =
 		get_commits(user, repo, Map("last_sha" -> last_sha, "per_page" -> per_page.toString))
 
