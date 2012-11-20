@@ -22,7 +22,7 @@ class GhIssueSpec extends Specification {
 			issues.length must beGreaterThan(0)
 		}
 
-		"return at least one issue (becouse the repository has issues) with a title" in {
+		"return at least one issue (becouse the repository has issues) with a non-empty title" in {
 			val req = GhIssue.get_issues("andreazevedo", "dispatch-github-specs")
 			val issues = Http(req)
 			issues.first.title.size must beGreaterThan(0)
