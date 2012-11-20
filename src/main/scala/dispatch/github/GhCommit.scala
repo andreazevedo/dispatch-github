@@ -3,11 +3,6 @@ package dispatch.github
 import dispatch._
 import json._
 import JsHttp._
-import java.util.Date
-import java.text.SimpleDateFormat
-
-case class GhAuthorSummary(name:String, date:Date, email:String)
-case class GhAuthor(avatar_url: String, url: String, login: String, gravatar_id: String, id: Int)
 
 case class GhTree(sha:String, url:String)
 

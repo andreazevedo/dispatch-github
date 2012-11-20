@@ -4,9 +4,16 @@ import dispatch._
 import json._
 import JsHttp._
 
+import java.util.Date
+
 case class GhContributor(id: Int, login: String, avatar_url: String)
 
+case class GhAuthorSummary(name:String, date:Date, email:String)
+
+case class GhAuthor(avatar_url: String, url: String, login: String, gravatar_id: String, id: Int)
+
 case class GhUser(id: Int, login: String, name: String, email: String, avatar_url: String, account_type: String)
+
 
 object GhUser {
 	
