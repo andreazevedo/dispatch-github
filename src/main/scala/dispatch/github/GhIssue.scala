@@ -17,8 +17,20 @@ case class GhMilestone(number: Int, state: String, title: String, description: S
 
 
 object GhIssue {
+	def get_issues(user: String, repo: String, page: Int, perPage: Int, accessToken: String): Handler[List[GhIssue]] = 
+		get_issues(user, repo, Map("page" -> page.toString, "per_page" -> perPage.toString, "access_token" -> accessToken))
+
+	def get_issues(user: String, repo: String, page: Int, accessToken: String): Handler[List[GhIssue]] = 
+		get_issues(user, repo, Map("page" -> page.toString, "access_token" -> accessToken))
+
 	def get_issues(user: String, repo: String, accessToken: String): Handler[List[GhIssue]] = 
 		get_issues(user, repo, Map("access_token" -> accessToken))
+
+	def get_issues(user: String, repo: String, page: Int, perPage: Int): Handler[List[GhIssue]] = 
+		get_issues(user, repo, Map("page" -> page.toString, "per_page" -> perPage.toString))
+
+	def get_issues(user: String, repo: String, page: Int): Handler[List[GhIssue]] = 
+		get_issues(user, repo, Map("page" -> page.toString))
 
 	def get_issues(user: String, repo: String, params: Map[String, String] = Map()): Handler[List[GhIssue]] = {
 		val svc = GitHub.api_host / "repos" / user / repo / "issues"
