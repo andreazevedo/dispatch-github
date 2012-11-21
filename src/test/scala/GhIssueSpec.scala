@@ -3,6 +3,7 @@ package dispatch.github.specs
 import org.specs._
 import dispatch._
 import dispatch.github._
+import java.util.Date
 
 class GhIssueSpec extends Specification {
 	"When retrieving github issues" should {
@@ -71,7 +72,8 @@ class GhIssueSpec extends Specification {
 			issue.milestone.get.open_issues must be(1)
 			issue.milestone.get.closed_issues must be(0)
 			issue.milestone.get.created_at must equalTo(DateTimeHelper.createDate(2012, 11, 5, 20, 42, 3, "GMT"))
-			issue.milestone.get.due_on must equalTo(DateTimeHelper.createDate(2012, 11, 5, 8, 0, 0, "GMT"))
+			issue.milestone.get.due_on must beSome[Date]
+			issue.milestone.get.due_on.get must equalTo(DateTimeHelper.createDate(2012, 11, 5, 8, 0, 0, "GMT"))
 
 			issue.closed_at must beNull
 			issue.created_at must equalTo(DateTimeHelper.createDate(2012, 11, 5, 20, 10, 2, "GMT"))

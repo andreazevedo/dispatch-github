@@ -8,7 +8,7 @@ import java.util.Date
 import java.text.SimpleDateFormat
 
 case class GhMilestone(number: Int, state: String, title: String, description: String, creator: GhAuthor, 
-					   open_issues: Int, closed_issues: Int, created_at: Date, due_on: Date)
+					   open_issues: Int, closed_issues: Int, created_at: Date, due_on: Option[Date])
 
 object GhMilestone {
 	def get_milestones(user: String, repo: String, page: Int, state: String, perPage: Int, accessToken: String): Handler[List[GhMilestone]] = 

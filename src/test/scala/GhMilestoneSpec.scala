@@ -3,6 +3,7 @@ package dispatch.github.specs
 import org.specs._
 import dispatch._
 import dispatch.github._
+import java.util.Date
 
 class GhMilestoneSpec extends Specification {
 	"When retrieving github milestones" should {
@@ -46,7 +47,8 @@ class GhMilestoneSpec extends Specification {
 			milestone.open_issues must be(1)
 			milestone.closed_issues must be(0)
 			milestone.created_at must equalTo(DateTimeHelper.createDate(2012, 11, 5, 20, 42, 3, "GMT"))
-			milestone.due_on must equalTo(DateTimeHelper.createDate(2012, 11, 5, 8, 0, 0, "GMT"))
+			milestone.due_on must beSome[Date]
+			milestone.due_on.get must equalTo(DateTimeHelper.createDate(2012, 11, 5, 8, 0, 0, "GMT"))
 		}
 	}
 }
