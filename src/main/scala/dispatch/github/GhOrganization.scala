@@ -21,6 +21,8 @@ case class GhOrganization(id: Int, login: String, url: String, avatar_url: Strin
 		}
 	}
 
+	def teams(access_token:String) = GhTeam.get_teams(login, access_token)
+
 }
 
 object GhOrganization {
