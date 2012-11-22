@@ -7,10 +7,12 @@ import net.liftweb.json.Serialization.write
 
 case class GhTeamSummary(url: String, name: String, id: Int) {
 	def members(access_token: String) = GhTeam.get_team_members(id, access_token)
+	def repositories(access_token: String) = GhTeam.get_team_repositories(id, access_token)
 }
 
 case class GhTeam(url: String, name: String, id: Int, permission: String, members_count: Int, repos_count: Int) {
 	def members(access_token: String) = GhTeam.get_team_members(id, access_token)
+	def repositories(access_token: String) = GhTeam.get_team_repositories(id, access_token)
 }
 
 object GhTeam {
@@ -32,12 +34,21 @@ object GhTeam {
 		}
 	}
 
-	def get_team_members(id: Int, access_token: String)= {
+	def get_team_members(id: Int, access_token: String) = {
 		val svc = GitHub.api_host / "teams" / id.toString / "members"
 		svc.secure <<? Map("access_token" -> access_token) ># { json =>
 			implicit val formats = DefaultFormats
 			val jsonObj = JsonParser.parse(json.toString)
 			jsonObj.extract[List[GhAuthor]]
+		}
+	}
+
+	def get_team_repositories(id: Int, access_token: String) = {
+		val svc = GitHub.api_host / "teams" / id.toString / "repos"
+		svc.secure <<? Map("access_token" -> access_token) ># { json =>
+			implicit val formats = DefaultFormats
+			val jsonObj = JsonParser.parse(json.toString)
+			jsonObj.extract[List[GhRepository]]
 		}
 	}
 }
