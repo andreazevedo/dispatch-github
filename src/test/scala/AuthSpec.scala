@@ -11,11 +11,11 @@ class AuthSpec extends Specification {
 	"When getting the github authorization url" should {
 
 		"return an object of the dispatch.Request when calling Auth.authorize_uri" in {
-			Auth.authorize_uri(clientId, redirectUri) must haveClass[dispatch.Request]
+			Auth.authorize_uri(clientId, redirectUri) must haveClass[com.ning.http.client.RequestBuilder]
 		}
 
 		"return a request that points to the correct url when calling Auth.authorize_uri" in {
-			Auth.authorize_uri(clientId, redirectUri).to_uri.toString must equalTo("https://github.com/login/oauth/authorize?client_id=" + clientId + "&redirect_uri=" + redirectUri)
+			Auth.authorize_uri(clientId, redirectUri).build().getUrl() must equalTo("https://github.com/login/oauth/authorize?client_id=" + clientId + "&redirect_uri=" + redirectUri)
 		}
 	}
 }

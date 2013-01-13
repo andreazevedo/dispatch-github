@@ -7,31 +7,31 @@ import java.util.Date
 
 class GhMilestoneSpec extends Specification {
 	"When retrieving github milestones" should {
-		"return a handler (before the request is not invoked)" in {
-			GhMilestone.get_milestones("andreazevedo", "dispatch-github-specs") must haveClass[dispatch.Handler[List[GhMilestone]]]
+		"return a promise (before the request is not invoked)" in {
+			GhMilestone.get_milestones("andreazevedo", "dispatch-github-specs") must haveClass[dispatch.Promise[List[GhMilestone]]]
 		}
 
 		"return something (not null) when the milestones request is invoked" in {
 			val req = GhMilestone.get_milestones("andreazevedo", "dispatch-github-specs")
-			val milestones = Http(req)
+			val milestones = req()
 			milestones must notBeNull
 		}
 
 		"return at least one milestone (becouse the repository has milestones)" in {
 			val req = GhMilestone.get_milestones("andreazevedo", "dispatch-github-specs")
-			val milestones = Http(req)
+			val milestones = req()
 			milestones.length must beGreaterThan(0)
 		}
 
 		"return at least one milestone (becouse the repository has milestones) with a non-empty title" in {
 			val req = GhMilestone.get_milestones("andreazevedo", "dispatch-github-specs")
-			val milestones = Http(req)
+			val milestones = req()
 			milestones.first.title.size must beGreaterThan(0)
 		}
 
 		"return the right milestones, containing all expected properties filled with the expected data" in {
 			val req = GhMilestone.get_milestones("andreazevedo", "dispatch-github-specs")
-			val milestones = Http(req)
+			val milestones = req()
 			val milestone = milestones.last
 
 			milestone must notBeNull

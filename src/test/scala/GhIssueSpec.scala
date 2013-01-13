@@ -7,31 +7,31 @@ import java.util.Date
 
 class GhIssueSpec extends Specification {
 	"When retrieving github issues" should {
-		"return a handler (before the request is not invoked)" in {
-			GhIssue.get_issues("andreazevedo", "dispatch-github-specs") must haveClass[dispatch.Handler[List[GhIssue]]]
+		"return a promise (before the request is not invoked)" in {
+			GhIssue.get_issues("andreazevedo", "dispatch-github-specs") must haveClass[dispatch.Promise[List[GhIssue]]]
 		}
 
 		"return something (not null) when the issues request is invoked" in {
 			val req = GhIssue.get_issues("andreazevedo", "dispatch-github-specs")
-			val issues = Http(req)
+			val issues = req()
 			issues must notBeNull
 		}
 
 		"return at least one issue (becouse the repository has issues)" in {
 			val req = GhIssue.get_issues("andreazevedo", "dispatch-github-specs")
-			val issues = Http(req)
+			val issues = req()
 			issues.length must beGreaterThan(0)
 		}
 
 		"return at least one issue (becouse the repository has issues) with a non-empty title" in {
 			val req = GhIssue.get_issues("andreazevedo", "dispatch-github-specs")
-			val issues = Http(req)
+			val issues = req()
 			issues.first.title.size must beGreaterThan(0)
 		}
 
 		"return the right issues, containing all expected properties filled with the expected data" in {
 			val req = GhIssue.get_issues("andreazevedo", "dispatch-github-specs")
-			val issues = Http(req)
+			val issues = req()
 			val issue = issues.last
 
 			issue must notBeNull
@@ -85,9 +85,9 @@ class GhIssueSpec extends Specification {
 
 
 	"When creating a new github issues" should {
-		"return a handler (before the request is not invoked)" in {
+		"return a promise (before the request is not invoked)" in {
 			val issue = GhIssueSummary("Test from dispatch github specs", "This is the body of the issue", "", None, Nil)
-			GhIssue.create("andreazevedo", "dispatch-github-specs", issue, "fakeAccessToken") must haveClass[dispatch.Handler[GhIssue]]
+			GhIssue.create("andreazevedo", "dispatch-github-specs", issue, "fakeAccessToken") must haveClass[dispatch.Promise[GhIssue]]
 		}
 	}
 }
