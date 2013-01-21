@@ -20,6 +20,8 @@ case class GhCommitSummary(commit: GhCommitData, parents: List[GhTree], url: Str
 case class GhCommit(stats: GhCommitStats, url: String, files: List[GhCommitFile], commit: GhCommitData, 
 					committer: Option[GhAuthor], author: Option[GhAuthor], parents: List[GhTree], sha: String)
 
+case class GhCommitId(sha: String, url: String)
+
 
 object GhCommit {
 
