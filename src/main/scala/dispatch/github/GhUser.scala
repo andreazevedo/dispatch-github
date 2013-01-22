@@ -27,7 +27,7 @@ object GhUser {
 			val id = jsonObj("id").asInt
 			val login = jsonObj("login").asString
 			val name = if (jsonObj.contains("name")) jsonObj("name").asString else ""
-			val email = jsonObj("email").asString
+			val email = if (jsonObj.contains("email")) jsonObj("email").asString else ""
 			val avatar_url = jsonObj("avatar_url").asString
 			val account_type = jsonObj("type").asString
 			
