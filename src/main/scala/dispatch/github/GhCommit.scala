@@ -107,8 +107,8 @@ object GhCommit {
 	}
 
 	private def parseCommitData(jsonObj: JsonObject) = {
-		val message = jsonObj("message").asString
-		val url = jsonObj("url").asString
+		val message = if (jsonObj.contains("message")) jsonObj("message").asString else ""
+		val url = if (jsonObj.contains("url")) jsonObj("url").asString else ""
 		val committer = parseAuthorSummary(jsonObj("committer").asObj)
 		val author = parseAuthorSummary(jsonObj("author").asObj)
 		val tree = parseTree(jsonObj("tree").asObj)
