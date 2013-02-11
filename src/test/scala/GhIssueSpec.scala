@@ -7,11 +7,6 @@ import java.util.Date
 
 class GhIssueSpec extends Specification {
 	"When retrieving github issues" should {
-		"return a promise (before the request is not invoked)" in {
-			//GhIssue.get_issues("andreazevedo", "dispatch-github-specs") must haveClass[dispatch.Promise[List[GhIssue]]]
-         pending
-		}
-
 		"return something (not null) when the issues request is invoked" in {
 			val req = GhIssue.get_issues("andreazevedo", "dispatch-github-specs")
 			val issues = req()
@@ -84,8 +79,9 @@ class GhIssueSpec extends Specification {
 
 
 
-
-	"When creating a new github issues" should {
+   // TODO issue creation test
+	
+   "When creating a new github issues" should {
 		"return a promise (before the request is not invoked)" in {
 			val issue = GhIssueSummary("Test from dispatch github specs", "This is the body of the issue", "", None, Nil)
 			//GhIssue.create("andreazevedo", "dispatch-github-specs", issue, "fakeAccessToken") must haveClass[dispatch.Promise[GhIssue]]

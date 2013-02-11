@@ -8,11 +8,6 @@ import java.util.Date
 
 class GhMilestoneSpec extends Specification {
 	"When retrieving github milestones" should {
-		"return a promise (before the request is not invoked)" in {
-			//GhMilestone.get_milestones("andreazevedo", "dispatch-github-specs") must haveClass[dispatch.Promise[List[GhMilestone]]]
-         Pending("Pending - not sure why we should type check this")
-		}
-
 		"return something (not null) when the milestones request is invoked" in {
 			val req = GhMilestone.get_milestones("andreazevedo", "dispatch-github-specs")
 			val milestones = req()

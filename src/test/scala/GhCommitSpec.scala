@@ -7,11 +7,6 @@ import dispatch.github._
 
 class GhCommitSpec extends Specification {
 	"When retrieving github commits" should {
-		"return a Promise" in {
-			//GhCommit.get_commits("andreazevedo", "dispatch-github") must haveClass[dispatch.Promise[List[GhCommitSummary]]]
-         Pending("Pending - not sure why we should type check this")
-		} 
-
 		"return something (not null) when the commits request is invoked" in {
          val commitsRes = GhCommit.get_commits("andreazevedo", "dispatch-github", "d77212a4a10c19e1329bd2614fc76abfcb15732d", 30)
 			val commits = commitsRes()
@@ -19,19 +14,13 @@ class GhCommitSpec extends Specification {
 		}
 
 		"return the right commit(s) when the commits request is invoked passing last_sha" in {
-			val commitsRes = 
-            GhCommit.get_commits(
-               "andreazevedo", "dispatch-github", "d77212a4a10c19e1329bd2614fc76abfcb15732d", 30
-            ).either.left.map { x =>
-               ("Error getting repo: " + x.getMessage)
-               failure
-            }.right.map { commits => 
-               //commits = commitsRes()
-               (commits must not beNull)  
-               commits.length mustNotEqual 0
-               commits(0).sha must beEqualTo("7433b3d714324418aca12aa6b04dbd21154bcc07")
-               commits(0).author must haveClass[Some[GhAuthor]]
-            }
+			val commitsRes = GhCommit.get_commits("andreazevedo", "dispatch-github", "d77212a4a10c19e1329bd2614fc76abfcb15732d", 30 )
+         val commits = commitsRes()
+
+         (commits must not beNull)  
+         commits.length mustNotEqual 0
+         commits(0).sha must beEqualTo("7433b3d714324418aca12aa6b04dbd21154bcc07")
+         commits(0).author must haveClass[Some[GhAuthor]]
 		}
 
       // TODO : check that getCommits.head and getCommit return the same results
