@@ -13,6 +13,8 @@ case class GhAuthor(avatar_url: String, url: String, login: String, gravatar_id:
 
 case class GhUser(id: Int, login: String, name: String, email: String, avatar_url: String, account_type: String)
 
+case class GhOwner(id:Int, login: String)
+
 
 object GhUser {
 	implicit val formats = DefaultFormats

@@ -21,6 +21,8 @@ case class GhCommitSummaryList(commits: Map[String, GhCommitSummary])
 case class GhCommit(stats: GhCommitStats, url: String, files: List[GhCommitFile], commit: GhCommitData, 
 					committer: Option[GhAuthor], author: Option[GhAuthor], parents: List[GhTree], sha: String)
 
+case class GhCommitId(sha: String, url: String)
+
 
 object GhCommit {
    implicit val formats = net.liftweb.json.DefaultFormats
