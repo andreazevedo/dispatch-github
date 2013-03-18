@@ -1,11 +1,10 @@
 package dispatch.github
 
 import dispatch._
-import json._
-import JsHttp._
 import java.util.{Calendar, Date, TimeZone}
 import java.text.SimpleDateFormat
 
+/*
 case class JsonObject(private val jsObject: JsObject) {
 	def apply(key: String):JsonValue = JsonValue(jsObject, key)
 	def contains(key: String) :Boolean = jsObject.self.contains(JsString(key)) && jsObject.self(JsString(key)).self != null
@@ -33,7 +32,7 @@ object parse {
 		dateParser.parse(dateAsString)
 	}
 }
-
+*/
 object DateTimeHelper {
 	def createDate(year: Int, month: Int, day: Int, hour: Int, minute: Int, second: Int, miliseconds: Int, timeZone: String): Date = {
 		val gmtCal = getCalendar(timeZone)

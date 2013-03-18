@@ -1,8 +1,7 @@
 package dispatch.github
 
 import dispatch._
-import json._
-import JsHttp._
+import net.liftweb.json._
 
 import java.util.Date
 
@@ -18,21 +17,11 @@ case class GhOwner(id:Int, login: String)
 
 
 object GhUser {
-	
+	implicit val formats = DefaultFormats
+   
 	def get_authenticated_user(access_token: String) = {
 		val svc = GitHub.api_host / "user"
-		svc.secure <<? Map("access_token" -> access_token) ># { json =>
-			val jsonObj = parse.jsonObj(json)
-			
-			val id = jsonObj("id").asInt
-			val login = jsonObj("login").asString
-			val name = if (jsonObj.contains("name")) jsonObj("name").asString else ""
-			val email = if (jsonObj.contains("email")) jsonObj("email").asString else ""
-			val avatar_url = jsonObj("avatar_url").asString
-			val account_type = jsonObj("type").asString
-			
-			GhUser(id, login, name, email, avatar_url, account_type)
-		}
+		val userJson = Http(svc.secure <<? Map("access_token" -> access_token) OK as.lift.Json)
+      for (js <- userJson) yield js.extract[GhUser]
 	}
-		
 }
