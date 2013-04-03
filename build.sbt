@@ -4,13 +4,19 @@ resolvers += "apache" at "https://repository.apache.org/content/repositories/sna
 
 resolvers += "typesafe" at "http://repo.typesafe.com/typesafe/snapshots/"
 
+resolvers ++= Seq("snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
+                  "releases"  at "http://oss.sonatype.org/content/repositories/releases")
+                    
 libraryDependencies ++= Seq(
-	"net.databinder" % "dispatch-core_2.9.1" % "0.8.7",
-	"net.databinder" % "dispatch-http-json_2.9.1" % "0.8.7",
-	"net.databinder" % "dispatch-oauth_2.9.1" % "0.8.7",
-	"org.scala-tools.testing" % "specs_2.9.1" % "1.6.9" % "test",
-	"net.liftweb" % "lift-json_2.9.1" % "2.5-M1"
+   "net.databinder.dispatch" %% "dispatch-core" % "0.9.5",
+   "net.databinder.dispatch" %% "dispatch-lift-json" % "0.9.5",
+   "org.specs2" %% "specs2" % "1.12.3" % "test"
+//   "org.slf4j" % "slf4j-api" % "1.7.2",
+//   "org.slf4j" % "slf4j-simple" % "1.7.2",
+//   "ch.qos.logback" % "logback-core" % "1.0.6" 
 )
+
+parallelExecution in Test := false
 
 name := "dispatch-github"
 
