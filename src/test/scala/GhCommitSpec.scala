@@ -49,7 +49,7 @@ class GhCommitSpec extends Specification {
 			commit.author must beSome[GhAuthor]
 			commit.author match {
 				case Some(author) => 
-					author.avatar_url must beEqualTo("https://secure.gravatar.com/avatar/bcc0f1aa2a39d379e613efe4858adad3?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png")
+					author.avatar_url must beEqualTo("https://avatars.githubusercontent.com/u/741321?")
 					author.url must beEqualTo("https://api.github.com/users/andreazevedo")
 					author.login must beEqualTo("andreazevedo")
 					author.gravatar_id must	beEqualTo("bcc0f1aa2a39d379e613efe4858adad3")
@@ -60,7 +60,7 @@ class GhCommitSpec extends Specification {
 			commit.committer must beSome[GhAuthor]
 			commit.committer match {
 				case Some(committer) => 
-					committer.avatar_url must beEqualTo("https://secure.gravatar.com/avatar/bcc0f1aa2a39d379e613efe4858adad3?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png")
+					committer.avatar_url must beEqualTo("https://avatars.githubusercontent.com/u/741321?")
 					committer.url must beEqualTo("https://api.github.com/users/andreazevedo")
 					committer.login must beEqualTo("andreazevedo")
 					committer.gravatar_id must	beEqualTo("bcc0f1aa2a39d379e613efe4858adad3")
