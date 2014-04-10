@@ -1,6 +1,7 @@
 package dispatch.github
 
 import dispatch._
+import Defaults._
 import net.liftweb.json._
 //import net.liftweb.json.Serialization.write
 import java.util.Date
@@ -12,25 +13,25 @@ case class GhMilestone(number: Int, state: String, title: String, description: S
 object GhMilestone {
    implicit val formats = DefaultFormats
    
-	def get_milestones(user: String, repo: String, page: Int, state: String, perPage: Int, accessToken: String): Promise[List[GhMilestone]] = 
+	def get_milestones(user: String, repo: String, page: Int, state: String, perPage: Int, accessToken: String): Future[List[GhMilestone]] =
 		get_milestones(user, repo, Map("page" -> page.toString, "state" -> state, "per_page" -> perPage.toString, "access_token" -> accessToken))
 
-	def get_milestones(user: String, repo: String, page: Int, state: String, accessToken: String): Promise[List[GhMilestone]] = 
+	def get_milestones(user: String, repo: String, page: Int, state: String, accessToken: String): Future[List[GhMilestone]] =
 		get_milestones(user, repo, Map("page" -> page.toString, "state" -> state, "access_token" -> accessToken))
 
-	def get_milestones(user: String, repo: String, page: Int, accessToken: String): Promise[List[GhMilestone]] = 
+	def get_milestones(user: String, repo: String, page: Int, accessToken: String): Future[List[GhMilestone]] =
 		get_milestones(user, repo, Map("page" -> page.toString, "access_token" -> accessToken))
 
-	def get_milestones(user: String, repo: String, accessToken: String): Promise[List[GhMilestone]] = 
+	def get_milestones(user: String, repo: String, accessToken: String): Future[List[GhMilestone]] =
 		get_milestones(user, repo, Map("access_token" -> accessToken))
 
-	def get_milestones(user: String, repo: String, page: Int, perPage: Int): Promise[List[GhMilestone]] = 
+	def get_milestones(user: String, repo: String, page: Int, perPage: Int): Future[List[GhMilestone]] =
 		get_milestones(user, repo, Map("page" -> page.toString, "per_page" -> perPage.toString))
 
-	def get_milestones(user: String, repo: String, page: Int): Promise[List[GhMilestone]] = 
+	def get_milestones(user: String, repo: String, page: Int): Future[List[GhMilestone]] =
 		get_milestones(user, repo, Map("page" -> page.toString))
 		
-	def get_milestones(user: String, repo: String, params: Map[String, String] = Map()): Promise[List[GhMilestone]] = {
+	def get_milestones(user: String, repo: String, params: Map[String, String] = Map()): Future[List[GhMilestone]] = {
       def get_milestonesJson(user: String, repo: String) = {
          val svc = GitHub.api_host / "repos" / user / repo / "milestones"
          Http((svc.secure <<? params) OK as.lift.Json)

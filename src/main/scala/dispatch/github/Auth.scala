@@ -1,6 +1,7 @@
 package dispatch.github
 
 import dispatch._
+import Defaults._
 import oauth._
 import com.ning.http.client.oauth._
 
@@ -22,7 +23,7 @@ trait GithubEndpoints extends oauth.SomeEndpoints {
 object Auth {
 	val svc = GitHub.host / "login" / "oauth"
 
-   def message[A](promised: Promise[A], ctx: String) =
+   def message[A](promised: Future[A], ctx: String) =
       for (exc <- promised.either.left)
       yield "Unexpected problem fetching %s:\n%s".format(ctx, exc.getMessage)
 
