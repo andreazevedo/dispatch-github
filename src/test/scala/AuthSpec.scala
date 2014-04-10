@@ -3,6 +3,8 @@ package dispatch.github.specs
 import org.specs2.mutable._
 import org.specs2.execute.Pending
 import dispatch.github._
+import scala.concurrent._
+import scala.concurrent.duration._
 
 class AuthSpec extends Specification {
 	val clientId:String = "ad42e1f93976bcaa61f2"
@@ -13,9 +15,10 @@ class AuthSpec extends Specification {
 
 		"return a Promise that contains to the correct url when calling Auth.webapp_authorize_uri" in {
 			val authRes = Auth.webapp_authorize_uri(clientId, redirectUri)
-         val redirectStr = authRes()
-         
-         redirectStr must equalTo("https://github.com/login?return_to=%2Flogin%2Foauth%2Fauthorize%3Fclient_id%3D" + clientId + "%26redirect_uri%3D" + redirectUri)
+			val timeout = DurationInt(2).seconds
+			val redirectStr = Await.result(authRes, timeout)
+
+			redirectStr must equalTo("https://github.com/login?return_to=%2Flogin%2Foauth%2Fauthorize%3Fclient_id%3D" + clientId + "%26redirect_uri%3D" + redirectUri)
 		}
 	}
 }
