@@ -1,6 +1,7 @@
 package dispatch.github
 
 import dispatch._
+import Defaults._
 import net.liftweb.json._
 
 case class GhTeamSummary(url: String, name: String, id: Int) {

@@ -1,6 +1,7 @@
 package dispatch.github
 
 import dispatch._
+import Defaults._
 import java.util.{Calendar, Date, TimeZone}
 import java.text.SimpleDateFormat
 

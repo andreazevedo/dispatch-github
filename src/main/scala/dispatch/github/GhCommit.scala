@@ -1,6 +1,7 @@
 package dispatch.github
 
 import dispatch._
+import Defaults._
 
 case class GhTree(sha:String, url:String)
 
@@ -28,16 +29,16 @@ object GhCommit {
    implicit val formats = net.liftweb.json.DefaultFormats
    
    // Reminder about commit pagination . pagination will return the per_page commits starting with the one AFTER last_sha
-	def get_commits(user: String, repo: String, last_sha: String, per_page: Int, access_token: String): Promise[List[GhCommitSummary]] =
+	def get_commits(user: String, repo: String, last_sha: String, per_page: Int, access_token: String): Future[List[GhCommitSummary]] =
 		get_commits(user, repo, Map("last_sha" -> last_sha, "per_page" -> per_page.toString, "access_token" -> access_token))
 
-	def get_commits(user: String, repo: String, last_sha: String, access_token: String): Promise[List[GhCommitSummary]] =
+	def get_commits(user: String, repo: String, last_sha: String, access_token: String): Future[List[GhCommitSummary]] =
 		get_commits(user, repo, Map("last_sha" -> last_sha, "access_token" -> access_token))
 
-	def get_commits(user: String, repo: String, last_sha: String, per_page: Int): Promise[List[GhCommitSummary]] =
+	def get_commits(user: String, repo: String, last_sha: String, per_page: Int): Future[List[GhCommitSummary]] =
 		get_commits(user, repo, Map("last_sha" -> last_sha, "per_page" -> per_page.toString))
 
-	def get_commits(user: String, repo: String, params: Map[String, String] = Map()) : Promise[List[GhCommitSummary]] = {
+	def get_commits(user: String, repo: String, params: Map[String, String] = Map()) : Future[List[GhCommitSummary]] = {
       def get_commitsJson(user: String, repo: String) = {
          val svc = GitHub.api_host / "repos" / user / repo / "commits"
          Http((svc.secure <<? params) OK as.lift.Json)
