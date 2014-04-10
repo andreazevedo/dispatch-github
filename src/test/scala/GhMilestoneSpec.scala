@@ -36,7 +36,7 @@ class GhMilestoneSpec extends Specification {
 			milestone.state must beEqualTo("open")
 			milestone.title must beEqualTo("first milestone")
 			milestone.description must beEqualTo("")
-			milestone.creator.avatar_url must beEqualTo("https://secure.gravatar.com/avatar/bcc0f1aa2a39d379e613efe4858adad3?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png")
+			milestone.creator.avatar_url must beEqualTo("https://avatars.githubusercontent.com/u/741321?")
 			milestone.creator.url must beEqualTo("https://api.github.com/users/andreazevedo")
 			milestone.creator.login must beEqualTo("andreazevedo")
 			milestone.creator.gravatar_id must	beEqualTo("bcc0f1aa2a39d379e613efe4858adad3")

@@ -36,7 +36,7 @@ class GhIssueSpec extends Specification {
 			issue.title must beEqualTo("first issue")
 			issue.body must beEqualTo("bla bla bla")			
 			(issue.user must not beNull)
-			issue.user.avatar_url must beEqualTo("https://secure.gravatar.com/avatar/bcc0f1aa2a39d379e613efe4858adad3?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png")
+			issue.user.avatar_url must beEqualTo("https://avatars.githubusercontent.com/u/741321?")
 			issue.user.url must beEqualTo("https://api.github.com/users/andreazevedo")
 			issue.user.login must beEqualTo("andreazevedo")
 			issue.user.gravatar_id must beEqualTo("bcc0f1aa2a39d379e613efe4858adad3")
@@ -44,7 +44,7 @@ class GhIssueSpec extends Specification {
 			issue.assignee must beSome[GhAuthor]
 			issue.assignee match {
 				case Some(assignee) => 
-					assignee.avatar_url must beEqualTo("https://secure.gravatar.com/avatar/bcc0f1aa2a39d379e613efe4858adad3?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png")
+					assignee.avatar_url must beEqualTo("https://avatars.githubusercontent.com/u/741321?")
 					assignee.url must beEqualTo("https://api.github.com/users/andreazevedo")
 					assignee.login must beEqualTo("andreazevedo")
 					assignee.gravatar_id must	beEqualTo("bcc0f1aa2a39d379e613efe4858adad3")
@@ -60,7 +60,7 @@ class GhIssueSpec extends Specification {
 			issue.milestone.get.state must beEqualTo("open")
 			issue.milestone.get.title must beEqualTo("first milestone")
 			issue.milestone.get.description must beEqualTo("")
-			issue.milestone.get.creator.avatar_url must beEqualTo("https://secure.gravatar.com/avatar/bcc0f1aa2a39d379e613efe4858adad3?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png")
+			issue.milestone.get.creator.avatar_url must beEqualTo("https://avatars.githubusercontent.com/u/741321?")
 			issue.milestone.get.creator.url must beEqualTo("https://api.github.com/users/andreazevedo")
 			issue.milestone.get.creator.login must beEqualTo("andreazevedo")
 			issue.milestone.get.creator.gravatar_id must	beEqualTo("bcc0f1aa2a39d379e613efe4858adad3")
