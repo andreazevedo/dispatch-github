@@ -1,6 +1,7 @@
 package dispatch.github
 
 import dispatch._
+import Defaults._
 import net.liftweb.json._
 
 import java.util.Date
