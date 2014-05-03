@@ -1,50 +1,67 @@
 package dispatch.github
 
-import scala.concurrent.Future
+import scala.concurrent._
+import scala.concurrent.duration._
 import dispatch._
-import Defaults._
-import net.liftweb.json._
-
-sealed abstract class Sort
-case class Stars() extends Sort
-case class BestMatch() extends Sort
-case class Forks() extends Sort
-case class Updated() extends Sort
+import com.ning.http.client.Response
 
 case class GhCode(name : String, path : String, sha : String,
                   url : String, git_url : String, html_url : String,
                   score : Double, repository : GhRSimpleRepository)
 
-object GhSearch {
+class UserSearch private(client : Client, params : Map[String, String]) {
 
-  implicit val formats = DefaultFormats
+  def this(client : Client, q : String) = this(client, Map("q" -> q))
 
-  def search_repos(query : String, sort : Sort = BestMatch(),
-                   ascending : Boolean = false) : Future[List[GhRepository]] = {
-    val svc = GitHub.api_host / "search" / "repositories"
-    val params1 = Map("q" -> query,
-                      "order" -> (if (ascending) "asc" else "desc"))
-    val params = sort match {
-      case BestMatch() => params1
-      case Stars() => params1 + ("order" -> "stars")
-      case Updated() => params1 + ("order" -> "updated")
-      case Forks() => params1 + ("order" -> "forks")
-    }
+  def ascending() = new UserSearch(client, params + ("sort" -> "asc"))
 
-    val respJson = Http(svc.secure <<? params OK as.lift.Json)
-    for (js <- respJson) yield (js \\ "items").extract[List[GhRepository]]
+  def byFollowers() = new UserSearch(client, params + ("order" -> "followers"))
+
+  def byRepositories() =
+    new UserSearch(client, params + ("order" -> "repositories"))
+
+  def byJoined() = new UserSearch(client, params + ("order" -> "joined"))
+
+  def perPage(n : Int) =
+    new UserSearch(client, params + ("per_page" -> n.toString))
+
+  def search()(implicit ec : ExecutionContext) = {
+    val url = (GitHub.api_host / "search" / "users" <<? params).secure
+    client.searchByUrl[GhAuthor](url)
   }
 
-  def search_code(query : String,
-                  sortByIndexed : Boolean = false,
-                  ascending : Boolean = false) : Future[List[GhCode]] = {
-    val svc = GitHub.api_host / "search" / "code"
-    val params1 = Map("q" -> query,
-                      "order" -> (if (ascending) "asc" else "desc"))
-    val params =
-      if (sortByIndexed) params1 + ("order" -> "indexed") else params1
+}
 
-    val respJson = Http(svc.secure <<? params OK as.lift.Json)
-    for (js <- respJson) yield (js \\ "items").extract[List[GhCode]]
+class CodeSearch private(client : Client, params : Map[String, String]) {
+
+  def this(client : Client, q : String) = this(client, Map("q" -> q))
+
+  def byIndexed() = new CodeSearch(client, params + ("ordered" -> "indexed"))
+
+  def ascending() = new CodeSearch(client, params + ("sort" -> "asc"))
+
+  def search()(implicit ec : ExecutionContext) = {
+    val url = (GitHub.api_host / "search" / "code" <<? params).secure
+    client.searchByUrl[GhCode](url)
   }
+
+}
+
+class RepoSearch private(client : Client, params : Map[String, String]) {
+
+  def this(client : Client, q : String) = this(client, Map("q" -> q))
+
+  def byStars() = new RepoSearch(client, params + ("order" -> "stars"))
+
+  def byForks() = new RepoSearch(client, params + ("order" -> "forks"))
+
+  def byUpdated() = new RepoSearch(client, params + ("order" -> "updated"))
+
+  def ascending() = new RepoSearch(client, params + ("sort" -> "asc"))
+
+  def search()(implicit ec : ExecutionContext) = {
+    val url = (GitHub.api_host / "search" / "repositories" <<? params).secure
+    client.searchByUrl[GhRepository](url)
+  }
+
 }

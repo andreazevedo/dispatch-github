@@ -1,5 +1,7 @@
 resolvers += "Java.net Maven2 Repository" at "http://download.java.net/maven/2/"
 
+libraryDependencies += "org.scala-lang.modules" %% "scala-async" % "0.9.1"
+
 resolvers += "apache" at "https://repository.apache.org/content/repositories/snapshots/"
 
 resolvers += "typesafe" at "http://repo.typesafe.com/typesafe/snapshots/"
