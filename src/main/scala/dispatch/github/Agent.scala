@@ -6,14 +6,32 @@ import scala.async.Async.{async, await}
 import dispatch.{Req, Http, as, url}
 import net.liftweb.json._
 import com.ning.http.client.Response
+import com.typesafe.scalalogging.slf4j.LazyLogging
 
-trait Client {
+trait Client extends LazyLogging {
 
   def searchUsers(q : String) = new UserSearch(this, q)
 
   def searchCode(q : String) = new CodeSearch(this, q)
 
   def searchRepos(q : String) = new RepoSearch(this, q)
+
+  private[github] def pause(resp : Response)(implicit ec : ExecutionContext)
+                           : Future[Boolean] = Future {
+    val hdrs = resp.getHeaders()
+    hdrs.getFirstValue("X-RateLimit-Remaining") match {
+      case "0" => {
+        val reset = 1000 * hdrs.getFirstValue("X-RateLimit-Reset").toLong
+        val now = System.currentTimeMillis()
+        // An extra second for clock skew.
+        val delay = math.max(1000, 1000 + reset - now)
+        logger.debug(s"GitHub API rate limit reached: pausing for ${delay / 1000}ms")
+        Thread.sleep(delay)
+        true
+      }
+      case _ => false
+    }
+  }
 
   def request(req : Req)
              (implicit ec : ExecutionContext) : Future[Response] = async {
