@@ -8,8 +8,10 @@ import java.text.SimpleDateFormat
 
 case class GhRSimpleRepository(id: Int, owner: GhOwner, name: String, html_url: String, description: String)
 
-case class GhRepository(id: Int, full_name : String, owner: GhOwner, name: String, updated_at: Date, language: String,
-	html_url: String, clone_url: String, description: String, open_issues: Int)
+case class GhRepository(id: Int, full_name : String, owner: GhOwner,
+                        name: String, updated_at: Date, language: String,
+                        html_url: String, clone_url: String,
+                        description: String, open_issues: Int)
   
 case class GhBranchSummary(name: String, commit: GhCommitId)
    
